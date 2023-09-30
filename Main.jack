@@ -1,0 +1,104 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/09/Average/Main.jack
+
+// Inputs some numbers and computes their average
+class Main {
+   function void main() {
+    var Array number;
+    var Array a;
+    var int i;
+    var int j;
+    var Array pan;
+    var int matchCount;
+    var int misplacedCount;
+    var int cont;
+    var int aux;
+    var int seed;
+    let seed = Keyboard.readInt("Enter four single-digit numbers: ");
+    let cont = 1;
+    let pan = Array.new(4);
+    let a = Array.new(4);
+    let number = Array.new(4);
+    while (cont > 0) {
+      let seed = seed * 5;
+      if (seed < 0) {
+        let seed = 0 - seed;
+      }
+      while (seed > 10007) {
+        let seed = seed - 10007;
+      }
+      // Set the number with four digits
+      let aux = seed;
+      let number[0] = aux / 1000;
+      let aux = aux - (number[0] * 1000);
+      let number[1] = aux / 100;
+      let aux = aux - (number[1] * 100);
+      let number[2] = aux / 10;
+      let aux = aux - (number[2] * 10);
+      let number[3] = aux;
+      let i = 0;
+      let matchCount = 0;
+      while (matchCount < 4) {
+        // Read the user input and store it in the userInput array
+        let aux = Keyboard.readInt("Enter four single-digit numbers: ");
+        let a[0] = aux / 1000;
+        let aux = aux - (a[0] * 1000);
+        let a[1] = aux / 100;
+        let aux = aux - (a[1] * 100);
+        let a[2] = aux / 10;
+        let aux = aux - (a[2] * 10);
+        let a[3] = aux;
+        // Count the number of matching places
+        let i = 0;
+        let matchCount = 0;
+        while (i < 4) {
+          if (number[i] = a[i]) {
+            let matchCount = matchCount + 1;
+          }
+          let i = i + 1;
+        }
+        // Count the number of equal digits in the wrong places
+        let misplacedCount = 0;
+         
+        let i = 0;
+        let pan[0] = 1;
+        let pan[1] = 1;
+        let pan[2] = 1;
+        let pan[3] = 1;
+        while (i < 4) {
+          let j = 0;
+          while (j < 4) {
+            if(i = j) { }
+            else {
+              if(a[j] = number[j]) { }
+              else {
+                if(a[i] = number[i]) { }
+                else {
+                  if (a[i] = number[j]) {
+                    if(pan[j] > 0) {
+                      let misplacedCount = misplacedCount + 1;
+                      let pan[j] = 0;
+                      let j=4;
+                    }
+                  }
+                }
+              }
+            }
+            let j = j + 1;
+          } 
+          let i = i + 1;
+        } 
+           
+        // Print the count of matching places and misplaced digits
+        do Output.printString("Number of matching places: ");
+        do Output.printInt(matchCount);
+        do Output.printString("  Number of misplaced digits: ");
+        do Output.printInt(misplacedCount);
+      }
+      let cont = Keyboard.readInt("Enter positive number to continue");
+  }
+      return;
+   }
+}
